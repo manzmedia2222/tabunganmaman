@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0d4b3e">
+<title>Tabunganku</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f1f3ec;--sheet:#fbfcf8;--tint:#e5eadf;--ink:#17231e;--muted:#5c6a62;--line:#d3dacb;
+  --cover:#0d4b3e;--cover-ink:#eef5ee;--in:#0b7a4f;--out:#b8412e;--amber:#e0a02e;--focus:#1d6fd6;
+  --font:'Schibsted Grotesk',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 var(--font);font-variant-numeric:tabular-nums}
+h1,h2,h3,p,dl,dd{margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding:24px 20px 64px}
+
+/* header */
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:40px;height:40px;border-radius:8px;background:var(--cover);color:var(--cover-ink);display:grid;place-items:center;font-weight:800;font-size:15px;letter-spacing:-.02em;box-shadow:inset 0 0 0 2px #ffffff22}
+.brand h1{font-size:20px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.brand p,.muted{color:var(--muted);font-size:13px}
+.date{color:var(--muted);font-size:13px;text-align:right}
+
+/* passbook cover */
+.cover{position:relative;display:grid;grid-template-columns:1fr auto;gap:24px 48px;align-items:end;background:var(--cover);color:var(--cover-ink);border-radius:14px;padding:28px 32px 28px 52px;margin-bottom:34px;overflow:hidden;
+  background-image:repeating-linear-gradient(to bottom,transparent 0 31px,#ffffff0d 31px 32px)}
+.cover::before{content:"";position:absolute;left:24px;top:14px;bottom:14px;border-left:2px dashed #ffffff40}
+.cover-label{font-size:14px;color:#bcd6cb}
+.total{font-size:clamp(36px,7.5vw,60px);font-weight:800;letter-spacing:-.035em;line-height:1.05;margin-top:4px;word-break:break-word}
+.stats{display:flex;gap:28px}
+.stats div{min-width:0}
+.stats dt{font-size:12.5px;color:#bcd6cb}
+.stats dd{font-size:17px;font-weight:700;margin-top:1px}
+.stats .in{color:#8fe8bc}.stats .out{color:#ffb5a5}
+
+/* layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;grid-template-areas:"goals aside" "history aside";gap:34px 36px;align-items:start}
+.goals-sec{grid-area:goals}.history-sec{grid-area:history}
+.aside{grid-area:aside;position:sticky;top:16px;background:var(--tint);border-radius:10px;padding:20px}
+.head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-bottom:10px;border-bottom:2px solid var(--ink)}
+.head h2,.aside h2{font-size:17px;font-weight:700;letter-spacing:-.01em}
+.aside h2{margin-bottom:14px}
+
+/* goals */
+.goal{display:grid;grid-template-columns:38px minmax(0,1fr) auto;column-gap:12px;row-gap:6px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.ico{grid-row:1/3;align-self:start;width:38px;height:38px;border-radius:8px;background:var(--tint);display:grid;place-items:center;font-size:18px}
+.goal-name{font-weight:650;font-size:15.5px;min-width:0;overflow-wrap:anywhere}
+.balance{font-size:18px;font-weight:750;letter-spacing:-.01em;text-align:right;white-space:nowrap}
+.bar{grid-column:2/4;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.fill{height:100%;background:var(--amber);border-radius:3px}
+.goal-foot{grid-column:2;color:var(--muted);font-size:12.5px}
+.goal .actions{grid-column:3;justify-content:flex-end}
+.goal-foot b{color:var(--ink);font-weight:650}
+
+/* buttons */
+button{font:inherit;font-weight:650;border:1px solid transparent;border-radius:7px;padding:10px 14px;background:var(--cover);color:var(--cover-ink);cursor:pointer;transition:background-color .15s,border-color .15s}
+button:hover{background:#0a3a30}
+button.secondary{background:transparent;color:var(--ink);border-color:#aab5a8}
+button.secondary:hover{background:var(--tint)}
+button.danger{background:transparent;color:var(--out);border-color:#d9a79d}
+button.danger:hover{background:#f5e3df}
+button.small{padding:6px 10px;font-size:13px}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+
+/* form */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:16px;border:1px solid #aab5a8;border-radius:8px;overflow:hidden;background:var(--sheet)}
+.tab{border:0;border-radius:0;background:transparent;color:var(--ink);padding:10px 8px;font-size:14px}
+.tab:hover{background:var(--tint)}
+.tab+.tab{border-left:1px solid #aab5a8}
+.tab.active[data-type="in"]{background:var(--in);color:#fff}
+.tab.active[data-type="out"]{background:var(--out);color:#fff}
+.formgrid{display:grid;gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:13px;font-weight:600}
+input,select{width:100%;background:var(--sheet);border:1px solid #aab5a8;border-radius:7px;color:var(--ink);padding:11px 12px;font:inherit}
+input::placeholder{color:#8a968e}
+input:focus,select:focus{border-color:var(--ink)}
+#amount{font-size:18px;font-weight:650}
+.hint{font-size:12.5px;color:var(--muted);margin-top:14px}
+
+/* history */
+.sub{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:13px;padding:10px 0}
+.tx{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line)}
+.tx-date{font-size:13px;font-weight:600;line-height:1.3}
+.tx-date small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.tx-title{font-weight:600;overflow-wrap:anywhere}
+.tx-meta{color:var(--muted);font-size:12.5px;margin-top:1px}
+.plus{color:var(--in);font-weight:750;white-space:nowrap}
+.minus{color:var(--out);font-weight:750;white-space:nowrap}
+.empty{padding:28px 0;color:var(--muted);font-size:14px;max-width:44ch}
+
+.note{margin-top:38px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;max-width:78ch}
+
+/* modal */
+.modalback{position:fixed;inset:0;background:#0d1a1599;display:none;align-items:center;justify-content:center;padding:16px;z-index:5}
+.modal{max-width:400px;width:100%;background:var(--sheet);border-radius:12px;padding:22px;box-shadow:0 20px 50px #0d1a1566}
+.modal h3{font-size:18px;margin-bottom:14px}
+.modal .field{margin-bottom:14px}
+.hidden{display:none!important}
+
+@media(max-width:820px){
+  .layout{grid-template-columns:minmax(0,1fr);grid-template-areas:"aside" "goals" "history"}
+  .aside{position:static}
+}
+@media(max-width:620px){
+  .wrap{padding:18px 14px 48px}
+  .top{align-items:flex-start}
+  .date{max-width:130px}
+  .cover{grid-template-columns:1fr;padding:22px 20px 22px 42px}
+  .cover::before{left:18px}
+  .stats{gap:22px;flex-wrap:wrap}
+  .tx{grid-template-columns:52px minmax(0,1fr) auto;gap:10px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body><main class="wrap">
+<header class="top"><div class="brand"><div class="logo" aria-hidden="true">Rp</div><div><h1>Tabunganku</h1><p>Catat dan atur uangmu dengan mudah.</p></div></div><div class="date" id="today"></div></header>
+
+<section class="cover" aria-label="Ringkasan tabungan">
+  <div><p class="cover-label">Total seluruh tabungan</p><div class="total" id="total">Rp0</div></div>
+  <dl class="stats">
+    <div><dt>Uang masuk</dt><dd class="in" id="sumIn">Rp0</dd></div>
+    <div><dt>Uang keluar</dt><dd class="out" id="sumOut">Rp0</dd></div>
+    <div><dt>Catatan</dt><dd id="txCount">0</dd></div>
+  </dl>
+</section>
+
+<div class="layout">
+  <section class="goals-sec">
+    <div class="head"><h2>Tabunganmu</h2><button class="small" id="addGoalBtn">＋ Tambah tabungan</button></div>
+    <div id="goals"></div>
+  </section>
+
+  <aside class="aside">
+    <h2>Catat keuangan</h2>
+    <div class="tabs"><button class="tab active" data-type="in">Uang masuk</button><button class="tab" data-type="out">Uang keluar</button></div>
+    <form id="txForm"><div class="formgrid">
+      <div class="field"><label for="amount">Nominal</label><input id="amount" inputmode="numeric" placeholder="Contoh: 10.000" required></div>
+      <div class="field"><label for="goalSelect">Tabungan</label><select id="goalSelect"></select></div>
+      <div class="field"><label for="desc">Catatan / untuk apa?</label><input id="desc" maxlength="80" placeholder="Contoh: uang sekolah, beli baju, uang jajan"></div>
+      <button type="submit" id="saveTx">Simpan uang masuk</button>
+    </div></form>
+    <p class="hint">Pilih uang masuk atau keluar, isi nominal, lalu tulis keterangan agar kamu ingat uangnya untuk apa.</p>
+  </aside>
+
+  <section class="history-sec" id="report">
+    <div class="head"><h2>Riwayat keuangan</h2><div class="actions"><button class="danger small" id="clearHistoryBtn">Hapus riwayat</button><button class="secondary small" id="downloadBtn">⬇ Download JPEG</button></div></div>
+    <div class="sub"><span>Semua pemasukan dan pengeluaran</span><span id="reportDate"></span></div>
+    <div id="history"></div>
+  </section>
+</div>
+
+<div class="note">Hanya <b>Kebutuhan pribadi</b> yang wajib dan tidak bisa dihapus. Tabungan lain, termasuk Sekolah, bisa kamu ubah nama, target, hapus, atau tambah sendiri. Data tersimpan di browser perangkat ini.</div>
+</main>
+
+<div class="modalback" id="modalBack"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h3 id="modalTitle">Tambah tabungan</h3><form id="goalForm"><div class="field"><label for="goalName">Nama tabungan</label><input id="goalName" maxlength="28" placeholder="Contoh: Dana darurat" required></div><div class="field"><label for="goalTarget">Target tabungan (Rp)</label><input id="goalTarget" inputmode="numeric" placeholder="Contoh: 500.000" required></div><div class="actions"><button type="submit">Simpan</button><button type="button" class="secondary" id="cancelModal">Batal</button></div></form></div></div>
+
+<script>
+const STORE='tabunganku_custom_v2';const requiredIds=['needs'];let state=read();let txType='in';let editingId=null;
+function fresh(){return {goals:[{id:'needs',name:'Kebutuhan pribadi',icon:'🧴',balance:0,target:100000,locked:true}],transactions:[]}}
+function read(){try{let x=JSON.parse(localStorage.getItem(STORE));if(x&&Array.isArray(x.goals)&&Array.isArray(x.transactions)){requiredIds.forEach(id=>{if(!x.goals.some(g=>g.id===id)){let d=fresh().goals.find(g=>g.id===id);x.goals.push(d)}});x.goals.forEach(g=>{g.locked=requiredIds.includes(g.id)});return x}}catch(e){}return fresh()}
+function save(){let ok=true;try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){ok=false;alert('Data gagal disimpan di browser. Pastikan penyimpanan browser tidak penuh atau diblokir.')}render();return ok}
+function fmt(n){return 'Rp'+new Intl.NumberFormat('id-ID',{maximumFractionDigits:0}).format(Number(n)||0)}function parse(v){return Number(String(v).replace(/[^0-9]/g,''))||0}function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){let total=state.goals.reduce((a,g)=>a+g.balance,0);document.getElementById('total').textContent=fmt(total);let ins=state.transactions.filter(t=>t.type==='in').reduce((a,t)=>a+t.amount,0),outs=state.transactions.filter(t=>t.type==='out').reduce((a,t)=>a+t.amount,0);document.getElementById('sumIn').textContent=fmt(ins);document.getElementById('sumOut').textContent=fmt(outs);document.getElementById('txCount').textContent=state.transactions.length;
+document.getElementById('goals').innerHTML=state.goals.map(g=>{let pct=g.target?Math.min(100,g.balance/g.target*100):0;return `<article class="goal"><span class="ico">${g.icon||'💰'}</span><div class="goal-name">${esc(g.name)}</div><div class="balance">${fmt(g.balance)}</div><div class="bar" role="progressbar" aria-label="Progres ${esc(g.name)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.floor(pct)}"><div class="fill" style="width:${pct}%"></div></div><div class="goal-foot"><b>${Math.floor(pct)}%</b> dari target ${fmt(g.target)}</div><div class="actions"><button class="secondary small" onclick="editGoal('${g.id}')">Ubah</button>${g.locked?'':`<button class="danger small" onclick="deleteGoal('${g.id}')">Hapus</button>`}</div></article>`}).join('');
+let sel=document.getElementById('goalSelect'),prev=sel.value;sel.innerHTML=state.goals.map(g=>`<option value="${g.id}">${esc(g.name)}</option>`).join('');if(prev&&state.goals.some(g=>g.id===prev))sel.value=prev;
+let h=document.getElementById('history');if(!state.transactions.length){h.innerHTML='<div class="empty">Belum ada catatan keuangan. Catat uang masuk pertamamu lewat formulir Catat keuangan.</div>'}else{let yr=new Date().getFullYear();h.innerHTML=state.transactions.slice(0,100).map(t=>{let g=state.goals.find(x=>x.id===t.goalId),d=new Date(t.date),dOpt={day:'numeric',month:'short'};if(d.getFullYear()!==yr)dOpt.year='numeric';return `<div class="tx"><time class="tx-date" datetime="${esc(t.date)}">${d.toLocaleDateString('id-ID',dOpt)}<small>${d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}</small></time><div><div class="tx-title">${esc(t.desc|| (t.type==='in'?'Uang masuk':'Uang keluar'))}</div><div class="tx-meta">${esc(g?g.name:'Tabungan dihapus')}</div></div><div class="${t.type==='in'?'plus':'minus'}">${t.type==='in'?'+':'−'}${fmt(t.amount)}</div></div>`}).join('')};document.getElementById('reportDate').textContent=new Date().toLocaleDateString('id-ID')}
+document.getElementById('clearHistoryBtn').addEventListener('click',()=>{
+  const hasTx=state.transactions.length>0,hasBalance=state.goals.some(g=>g.balance!==0);
+  if(!hasTx&&!hasBalance)return alert('Riwayat dan saldo sudah kosong.');
+  if(!confirm('Hapus semua riwayat transaksi?\n\nSaldo semua tabungan akan direset menjadi Rp0. Nama, kategori, dan target tabungan tetap dipertahankan.\n\nTindakan ini tidak bisa dibatalkan.'))return;
+  state.transactions=[];
+  state.goals.forEach(g=>{g.balance=0});
+  save();
+  try{let s=JSON.parse(localStorage.getItem(STORE));if(!s||s.transactions.length||s.goals.some(g=>g.balance!==0))alert('Reset belum tersimpan di browser. Coba lagi.')}catch(e){alert('Reset belum tersimpan di browser. Coba lagi.')}
+});
+function setType(type){txType=type;document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.type===type));document.getElementById('saveTx').textContent=type==='in'?'Simpan uang masuk':'Simpan uang keluar'}document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>setType(b.dataset.type)));
+document.getElementById('amount').addEventListener('input',e=>{let n=parse(e.target.value);e.target.value=n?new Intl.NumberFormat('id-ID').format(n):''});document.getElementById('goalTarget').addEventListener('input',e=>{let n=parse(e.target.value);e.target.value=n?new Intl.NumberFormat('id-ID').format(n):''});
+document.getElementById('txForm').addEventListener('submit',e=>{e.preventDefault();let amount=parse(document.getElementById('amount').value),goalId=document.getElementById('goalSelect').value,goal=state.goals.find(g=>g.id===goalId),desc=document.getElementById('desc').value.trim();if(!amount||!goal)return alert('Masukkan nominal yang benar.');if(txType==='out'&&goal.balance<amount)return alert('Saldo tabungan ini belum cukup.');goal.balance+=txType==='in'?amount:-amount;state.transactions.unshift({id:Date.now(),type:txType,amount,goalId,desc:desc||(txType==='in'?'Uang masuk':'Uang keluar'),date:new Date().toISOString()});e.target.reset();save()});
+const modal=document.getElementById('modalBack');function openModal(g){editingId=g?g.id:null;document.getElementById('modalTitle').textContent=g?'Ubah tabungan':'Tambah tabungan';document.getElementById('goalName').value=g?g.name:'';document.getElementById('goalTarget').value=g?new Intl.NumberFormat('id-ID').format(g.target):'';modal.style.display='flex';document.getElementById('goalName').focus()}function closeModal(){modal.style.display='none'}document.getElementById('addGoalBtn').onclick=()=>openModal(null);document.getElementById('cancelModal').onclick=closeModal;modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.style.display==='flex')closeModal()});
+window.editGoal=id=>{let g=state.goals.find(x=>x.id===id);if(g)openModal(g)};window.deleteGoal=id=>{let g=state.goals.find(x=>x.id===id);if(!g||g.locked)return;if(!confirm(`Hapus tabungan "${g.name}"? Saldo yang tersisa akan dipindahkan ke Kebutuhan pribadi.`))return;let needs=state.goals.find(x=>x.id==='needs');needs.balance+=g.balance;state.transactions.forEach(t=>{if(t.goalId===id)t.goalId='needs'});state.goals=state.goals.filter(x=>x.id!==id);save()};
+document.getElementById('goalForm').addEventListener('submit',e=>{e.preventDefault();let name=document.getElementById('goalName').value.trim(),target=parse(document.getElementById('goalTarget').value);if(!name||!target)return alert('Isi nama dan target tabungan.');if(editingId){let g=state.goals.find(x=>x.id===editingId);g.name=name;g.target=target}else{state.goals.push({id:'g'+Date.now(),name,icon:'💰',balance:0,target,locked:false})}closeModal();save()});
+// Create a standalone JPEG report using an SVG rendered to canvas.
+document.getElementById('downloadBtn').onclick=()=>{let rows=state.transactions.slice(0,35);let width=900,rowH=58,height=330+Math.max(rows.length,1)*rowH+state.goals.length*32;let total=state.goals.reduce((a,g)=>a+g.balance,0);let y=250;let lines=rows.map(t=>{let g=state.goals.find(x=>x.id===t.goalId);let color=t.type==='in'?'#15845e':'#c14b4b';let sign=t.type==='in'?'+':'−';let date=new Date(t.date).toLocaleDateString('id-ID');let line=`<text x="55" y="${y+23}" font-size="19" fill="#182234">${esc(t.desc||'Transaksi')}</text><text x="55" y="${y+45}" font-size="13" fill="#667085">${esc(g?g.name:'Tabungan')} · ${date}</text><text x="845" y="${y+32}" text-anchor="end" font-size="20" font-weight="700" fill="${color}">${sign}${fmt(t.amount)}</text>`;y+=rowH;return line}).join('');if(!rows.length)lines='<text x="55" y="285" font-size="18" fill="#667085">Belum ada transaksi.</text>';let goals=state.goals.map(g=>`<text x="55" y="${y+=32}" font-size="16" fill="#344054">${esc(g.name)}: ${fmt(g.balance)} / target ${fmt(g.target)}</text>`).join('');let svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="100%" height="100%" fill="#f5f7fb"/><rect x="0" y="0" width="900" height="175" fill="#17253a"/><text x="55" y="65" font-size="34" font-weight="700" fill="#ffffff">Catatan Keuangan</text><text x="55" y="103" font-size="17" fill="#c5d3e5">Tabunganku · ${new Date().toLocaleDateString('id-ID')}</text><text x="55" y="150" font-size="26" font-weight="700" fill="#f5b83d">Total saldo: ${fmt(total)}</text><text x="55" y="215" font-size="21" font-weight="700" fill="#182234">Riwayat transaksi</text>${lines}<text x="55" y="${y+35}" font-size="21" font-weight="700" fill="#182234">Saldo tabungan</text>${goals}</svg>`;let blob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'}),url=URL.createObjectURL(blob),img=new Image();img.onload=()=>{let c=document.createElement('canvas');c.width=width*2;c.height=height*2;let ctx=c.getContext('2d');ctx.scale(2,2);ctx.drawImage(img,0,0,width,height);URL.revokeObjectURL(url);c.toBlob(b=>{let a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='catatan-keuangan.jpg';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)},'image/jpeg',.95)};img.onerror=()=>{URL.revokeObjectURL(url);alert('Gagal membuat gambar. Coba lagi.')};img.src=url};
+document.getElementById('today').textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});render();
+</script></body></html>
